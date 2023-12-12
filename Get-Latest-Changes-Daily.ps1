@@ -1,36 +1,37 @@
 #Invoke-WebRequest -Uri https://github.com/afrank84/dr-greenwalt-automation/archive/refs/heads/main.zip -OutFile C:\stash\dr-greenwalt-automation-main.zip
 
-$owner = "username"
-$repo = "repository"
-$branch = "main"
-$localFile = "path\to\local\commitSHA.txt"
+# Define the URL of the GitHub ZIP file
+$githubZipUrl = 'https://github.com/afrank84/dr-greenwalt-automation/archive/refs/heads/main.zip'
 
-# Function to get the latest commit SHA from GitHub
-function Get-LatestCommitSHA {
-    $uri = "https://api.github.com/repos/$owner/$repo/commits/$branch"
-    $response = Invoke-RestMethod -Uri $uri -Headers @{ "User-Agent" = "PowerShell" }
-    return $response.sha
+# Define the destination folder
+$destinationFolder = 'C:\stash\'
+
+# Define the path for the ZIP file
+$zipFilePath = Join-Path -Path $destinationFolder -ChildPath 'dr-greenwalt-automation-main.zip'
+
+# Define the extraction subfolder
+$extractionSubFolder = Join-Path -Path $destinationFolder -ChildPath 'dr-greenwalt-automation-main'
+
+# Check and create the destination folder if it does not exist
+if (-not (Test-Path -Path $destinationFolder)) {
+    New-Item -Path $destinationFolder -ItemType Directory
 }
 
-# Read the last known commit SHA
-$lastKnownSHA = ""
-if (Test-Path $localFile) {
-    $lastKnownSHA = Get-Content $localFile
+# Check if the extraction subfolder exists, and if so, delete it
+if (Test-Path -Path $extractionSubFolder) {
+    Remove-Item -Path $extractionSubFolder -Recurse -Force
 }
 
-# Get the latest commit SHA from GitHub
-$latestSHA = Get-LatestCommitSHA
+# Download the ZIP file
+Invoke-WebRequest -Uri $githubZipUrl -OutFile $zipFilePath
 
-# Compare and download if different
-if ($latestSHA -ne $lastKnownSHA) {
-    $downloadUrl = "https://github.com/$owner/$repo/archive/$branch.zip"
-    $outputFile = "$repo-$branch.zip"
-    Invoke-WebRequest -Uri $downloadUrl -OutFile $outputFile
-    # Optionally, extract the ZIP file as shown in previous answer
-    # Update the local commit SHA file
-    $latestSHA | Set-Content $localFile
-    Write-Host "Repository updated and downloaded."
-} else {
-    Write-Host "Repository is up-to-date. No download required."
-}
+# Unzip the file
+Expand-Archive -Path $zipFilePath -DestinationPath $destinationFolder
+
+# Remove the ZIP file
+Remove-Item -Path $zipFilePath
+
+# Output message
+Write-Host "ZIP file downloaded and extracted to $destinationFolder"
+
 
