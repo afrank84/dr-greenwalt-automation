@@ -14,7 +14,7 @@ $settings = New-ScheduledTaskSettingsSet -AllowStartIfOnBatteries -DontStopIfGoi
 Register-ScheduledTask -Action $action -Trigger $trigger -TaskName "Frank-dr-greenwalt-automation" -TaskPath "\" -Settings $settings
 
 # Set the task to wake the computer
-Set-ScheduledTask -TaskName "Frank-dr-greenwalt-automation" -WakeToRun $true
+Set-ScheduledTask -TaskName "Frank-dr-greenwalt-automationupdate" -WakeToRun $true
 
 # Optional: Display a confirmation message
-Write-Host "Scheduled task 'Frank-dr-greenwalt-automation' has been created."
+Write-Host "Scheduled task 'Frank-dr-greenwalt-automationupdate' has been created."
