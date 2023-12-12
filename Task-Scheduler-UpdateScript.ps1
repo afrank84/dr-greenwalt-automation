@@ -11,7 +11,7 @@ $trigger = New-ScheduledTaskTrigger -Daily -At "7:00pm"
 $settings = New-ScheduledTaskSettingsSet -AllowStartIfOnBatteries -DontStopIfGoingOnBatteries -DontStopIfGoingOffIdle
 
 # Register the task with Task Scheduler
-Register-ScheduledTask -Action $action -Trigger $trigger -TaskName "Frank-dr-greenwalt-automation" -TaskPath "\" -Settings $settings
+Register-ScheduledTask -Action $action -Trigger $trigger -TaskName "Frank-dr-greenwalt-automationupdate" -TaskPath "\" -Settings $settings
 
 # Set the task to wake the computer
 Set-ScheduledTask -TaskName "Frank-dr-greenwalt-automationupdate" -WakeToRun $true
