@@ -2,8 +2,8 @@
 Should turn on his dental devices in the morning.
 
 #### Documents
-Get-Latest-blah-blah
-- Will update current PC with latest file to use.
+- Automate-Desktop.ps1
+- Get-Latest-Changes-Daily.ps1
 
 
 #### Useful Links
